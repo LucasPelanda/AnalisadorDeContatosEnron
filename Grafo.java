@@ -1,48 +1,58 @@
+// DAVI KAZUHIRO NATUME, PEDRO HENRIQUE FAVERO
+
 public class Grafo {
-    private static final boolean MEMBRO = true;
-    private static final boolean NAOMEMBRO = false;
-    private static final int INFINITO = 999999999;
-    private ListaEncadeada[] listas; 
-    private String[] vertices;       
+    // ATRIBUTOS DO GRAFO
+    private ListaEncadeada[] listaAdj; 
+    private String[] rotulos;       
     public int tamanho;
     private int[] caminho;
 
+    // CONSTANTES PARA O MELHOR CAMINHO
+    private static final boolean MEMBRO = true;
+    private static final boolean NAOMEMBRO = false;
+    private static final int INFINITO = 999999999;
+
     public Grafo(int tamanho) {
         this.tamanho = tamanho;
-        this.listas = new ListaEncadeada[tamanho];
-        this.vertices = new String[tamanho];
+        this.listaAdj = new ListaEncadeada[tamanho];
+        this.rotulos = new String[tamanho];
         this.caminho = new int[tamanho];
 
         for (int i = 0; i < tamanho; i++) {
-            listas[i] = new ListaEncadeada();
-            vertices[i] = "";
+            listaAdj[i] = new ListaEncadeada();
+            rotulos[i] = "";
         }
     }
 
-    private void validaVertice(int indiceVertice) {
+    private boolean validaVertice(int indiceVertice) {
         if (indiceVertice < 0 || indiceVertice >= tamanho) {
-            throw new IllegalArgumentException("Indice de vertice invalido: " + indiceVertice);
+            System.out.println("Indice inválido: " + indiceVertice);
+            return false;
         }
+        return true;
     }
 
     public void cria_adjacencia(int origem, int destino, int peso) {
-        validaVertice(origem);
-        validaVertice(destino);
-        listas[origem].inserir(destino, peso);
+        if(!validaVertice(origem) || !validaVertice(destino)){
+            System.out.println("Indice inválido");
+            return;
+        }
+
+        listaAdj[origem].inserir(destino, peso);
     }
 
     public void remove_adjacencia(int origem, int destino) {
-        validaVertice(origem);
-        validaVertice(destino);
-        listas[origem].remover(destino);
+        if(validaVertice(origem) && validaVertice(destino)){
+            listaAdj[origem].remover(destino);
+        }  
     }
 
     public void imprime_adjacencias() {
         for (int i = 0; i < tamanho; i++) {
-            System.out.print(vertices[i] + "[" + i + "] ");
-            Node atual = listas[i].head;
+            System.out.print(rotulos[i] + "[" + i + "] ");
+            Node atual = listaAdj[i].head;
             while (atual != null) {
-                System.out.print("-> " + vertices[atual.destino] + "[" + atual.destino + "](peso:" + atual.peso + ") ");
+                System.out.print("-> " + rotulos[atual.destino] + "[" + atual.destino + "](peso:" + atual.peso + ") ");
                 atual = atual.proximo;
             }
             System.out.println();
@@ -50,26 +60,32 @@ public class Grafo {
     }
 
     public void seta_informacao(int indiceVertice, String valor) {
-        validaVertice(indiceVertice);
-        vertices[indiceVertice] = valor;
+        if(validaVertice(indiceVertice)){
+            rotulos[indiceVertice] = valor;
+        }
+
     }
 
     public int adjacentes(int indiceVertice, int[] adjacentes) {
-        validaVertice(indiceVertice);
-        int quantidade = 0;
-        Node atual = listas[indiceVertice].head;
-        while (atual != null) {
-            adjacentes[quantidade] = atual.destino;
-            quantidade++;
-            atual = atual.proximo;
+        if(validaVertice(indiceVertice)){
+            int quantidade = 0;
+            Node atual = listaAdj[indiceVertice].head;
+            while (atual != null) {
+                adjacentes[quantidade] = atual.destino;
+                quantidade++;
+                atual = atual.proximo;
+            }
+            return quantidade;
         }
-        return quantidade;
+        else{
+            return 0;
+        }
     }
 
     public boolean[][] matrizAdjacenciaBooleana() {
         boolean[][] matriz = new boolean[tamanho][tamanho];
         for (int i = 0; i < tamanho; i++) {
-            Node atual = listas[i].head;
+            Node atual = listaAdj[i].head;
             while (atual != null) {
                 matriz[i][atual.destino] = true;
                 atual = atual.proximo;
@@ -108,7 +124,7 @@ public class Grafo {
     }
 
     private int peso(int origem, int destino) {
-        Node atual = listas[origem].head;
+        Node atual = listaAdj[origem].head;
         while (atual != null) {
             if (atual.destino == destino) {
                 return atual.peso;
@@ -119,15 +135,14 @@ public class Grafo {
     }
 
     public int melhorCaminho(int s, int t) {
-        validaVertice(s);
-        validaVertice(t);
+        if(!validaVertice(s) || !validaVertice(t)) return INFINITO;
+
         int distancia[] = new int[tamanho];
         boolean perm[] = new boolean[tamanho];
         int corrente;
         int i;
         int k = s;
         int dc;
-        int j = 0;
         int menordist;
         int novadist;
         // inicializacao
@@ -167,38 +182,35 @@ public class Grafo {
 
             corrente = k;
             perm[corrente] = MEMBRO;
-            j++;
         }
-        if (j < 0) {
-            return INFINITO;
-        }
+       
 
         return distancia[t];
     }
 
 
     public void imprimeCaminho(int s, int t) {
-        validaVertice(s);
-        validaVertice(t);
+        if(!validaVertice(s) || !validaVertice(t)) return;
+
         if (caminho[t] == -1 && s != t) {
             System.out.println("Nao existe caminho entre os vertices informados.");
             return;
         }
         int i = caminho[t];
-        System.out.print(vertices[t] + " ");
+        System.out.print(rotulos[t] + " ");
         while (i != s) {
-            System.out.print(vertices[i] + " ");
+            System.out.print(rotulos[i] + " ");
             i = caminho[i];
             if (i == -1) {
                 System.out.println();
                 return;
             }
         }
-        System.out.println(vertices[i]);
+        System.out.println(rotulos[i]);
     }
 
     public static void main(String[] args) {
-        System.out.println("=== Testes simples: Warshall ===");
+        System.out.println("=== Testes Warshall ===");
         Grafo grafoWarshall = new Grafo(4);
         grafoWarshall.cria_adjacencia(0, 1, 1);
         grafoWarshall.cria_adjacencia(1, 2, 1);
@@ -207,7 +219,7 @@ public class Grafo {
         System.out.println(matrizFechamento[0][3] ? "OK: 0 alcanca 3" : "ERRO: 0 deveria alcancar 3");
         System.out.println(!matrizFechamento[3][0] ? "OK: 3 nao alcanca 0" : "ERRO: 3 nao deveria alcancar 0");
 
-        System.out.println("\n=== Testes simples: Dijkstra ===");
+        System.out.println("\n=== Testes Dijkstra ===");
         Grafo grafoDijkstra = new Grafo(5);
         grafoDijkstra.seta_informacao(0, "A");
         grafoDijkstra.seta_informacao(1, "B");
@@ -223,8 +235,8 @@ public class Grafo {
         grafoDijkstra.cria_adjacencia(4, 3, 1);
 
         int distanciaMinima = grafoDijkstra.melhorCaminho(0, 3);
-        System.out.println(distanciaMinima == 6 ? "OK: distancia minima = 6" : "ERRO: distancia minima deveria ser 6");
-        System.out.print("Caminho encontrado (de t ate s): ");
+        System.out.println(distanciaMinima == 6 ? "distancia minima = 6" : "distancia minima deveria ser 6");
+        System.out.print("Caminho encontrado de D a A: ");
         grafoDijkstra.imprimeCaminho(0, 3);
 
     }
