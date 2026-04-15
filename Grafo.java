@@ -209,6 +209,64 @@ public class Grafo {
         System.out.println(rotulos[i]);
     }
 
+    public void buscaProfundidade(int inicio, int fim, boolean[] visitados) {
+        if (!validaVertice(inicio) || !validaVertice(fim)) {
+            System.out.println("invalido");
+        }
+    
+        if (inicio == fim) {
+            System.out.println("Achou");
+        }
+
+        visitados[inicio] = true;
+        System.out.println("qual eu to " + rotulos[inicio]);
+
+        Node atual = listaAdj[inicio].head;
+ 
+        while (atual != null){
+           int destino = atual.destino;
+           if(!visitados[destino]){
+                buscaProfundidade(destino, fim, visitados);
+           }
+
+           atual = atual.proximo;
+        }
+        
+    }
+
+    public void buscaLargura(Fila fila, int fim, boolean[] visitados) {
+        if (!validaVertice(fim)) {
+            System.out.println("invalido");
+            return;
+        }
+    
+        if (fila.filaVazia()) {
+            return;
+        }
+    
+        int atual = fila.desenfileirar();
+        System.out.println("qual eu to " + rotulos[atual]);
+    
+        if (atual == fim) {
+            System.out.println("Achou");
+            return;
+        }
+    
+        Node adj = listaAdj[atual].head;
+        while (adj != null) {
+            int destino = adj.destino;
+    
+            if (!visitados[destino]) {
+                visitados[destino] = true;
+                fila.enfileirar(destino);
+            }
+    
+            adj = adj.proximo;
+        }
+    
+        buscaLargura(fila, fim, visitados);
+    }
+
     public static void main(String[] args) {
         System.out.println("=== Testes Warshall ===");
         Grafo grafoWarshall = new Grafo(4);
@@ -238,6 +296,19 @@ public class Grafo {
         System.out.println(distanciaMinima == 6 ? "distancia minima = 6" : "distancia minima deveria ser 6");
         System.out.print("Caminho encontrado de D a A: ");
         grafoDijkstra.imprimeCaminho(0, 3);
+
+        boolean [] visitados = new boolean[5];
+
+
+        grafoDijkstra.buscaProfundidade(0, 2, visitados);
+        boolean[] visitadosLargura = new boolean[5];
+        Fila fila = new Fila(5);
+
+        visitadosLargura[0] = true;
+        fila.enfileirar(0);
+
+        grafoDijkstra.buscaLargura(fila, 2, visitadosLargura);
+
 
     }
 }
