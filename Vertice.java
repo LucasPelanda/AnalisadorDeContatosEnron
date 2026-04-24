@@ -22,11 +22,11 @@ public class Vertice {
         
         if(!adjacentes.containsKey(destino)){
             adjacentes.put(destino, 1);
+            grauSaida++;
             return;
         }
 
         adjacentes.put(destino, adjacentes.get(destino) + 1);
-        grauSaida++;
     }
 
     /**
