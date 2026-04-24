@@ -1,8 +1,10 @@
-// DAVI KAZUHIRO NATUME, PEDRO HENRIQUE FAVERO
+// DAVI NATUME, PEDRO FAVERO, LUCAS PELANDA, EDUARDO TEODORO 
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
-public class Grafo{
+public class Grafo {
     // ATRIBUTOS DO GRAFO
     private HashMap<String, Vertice> tabelaAdjacencias; 
     public int tamanho;
@@ -10,9 +12,9 @@ public class Grafo{
     public Vertice[] maioresEntradas;
 
     // CONSTANTES PARA O MELHOR CAMINHO
-    private static final boolean MEMBRO = true;
-    private static final boolean NAOMEMBRO = false;
-    private static final int INFINITO = 999999999;
+    //private static final boolean MEMBRO = true;
+    //private static final boolean NAOMEMBRO = false;
+    //private static final int INFINITO = 999999999;
 
     public Grafo(int tamanho) {
         this.tamanho = tamanho;
@@ -34,12 +36,68 @@ public class Grafo{
         tabelaAdjacencias.get(destino).adicionarRemetente();
 
         // TODO: implementar lógica para comparar vertices com maior grau de entrada e saida
-        ajustarMaiores();
+        ajustarMaiores(tabelaAdjacencias.get(origem), tabelaAdjacencias.get(destino));
     }
 
-    public void ajustarMaiores(){
+    public void ajustarMaiores(Vertice origem, Vertice destino) {
 
+
+        // Como vamos usar só um metodo para ajustar tanto saida qunato entrada dei break no for em vez de return 
+        boolean achouEntrada = false;
+
+        
+        for (int i = 0; i < maioresEntradas.length; i++) {
+
+            //se o existe espaço vazio comola o email lá
+            if (maioresEntradas[i] == null) {
+                maioresEntradas[i] = destino;
+                achouEntrada = true;
+                break;
+            }
+
+            //se o email já ta na lista não precisa fazer nada
+            if (maioresEntradas[i].email.equals(destino.email)) {
+                achouEntrada = true;
+                break;
+            }
+        }
+
+        //se o email não ta na lista e tem mais entradas que o ultimo da lista (estamos fazendo a lista sempre ordenada) substitui o ultimo da lista
+        if (!achouEntrada && destino.grauEntrada > maioresEntradas[19].grauEntrada) {
+            maioresEntradas[19] = destino;
+        }
+
+        //ordenação 
+        Arrays.sort(maioresEntradas, (a, b) -> {
+            if (a == null) return 1;
+            if (b == null) return -1;
+            return Integer.compare(b.grauEntrada, a.grauEntrada);
+        });
+
+        //mesma lógica para saida
+        boolean achouSaida = false;
+        for (int j = 0; j < maioresSaidas.length; j++) {
+            if (maioresSaidas[j] == null) {
+                maioresSaidas[j] = origem;
+                achouSaida = true;
+                break;
+            }
+            if (maioresSaidas[j].email.equals(origem.email)) {
+                achouSaida = true;
+                break;
+            }
+        }
+        if (!achouSaida && origem.grauSaida > maioresSaidas[19].grauSaida) {
+            maioresSaidas[19] = origem;
+        }
+        Arrays.sort(maioresSaidas, (a, b) -> {
+            if (a == null) return 1;
+            if (b == null) return -1;
+            return Integer.compare(b.grauSaida, a.grauSaida);
+        });
     }
+
+
 
     // public void remove_adjacencia(int origem, int destino) {
     //     if(validaVertice(origem) && validaVertice(destino)){
@@ -47,17 +105,35 @@ public class Grafo{
     //     }  
     // }
 
-    // public void imprime_adjacencias() {
-    //     for (int i = 0; i < tamanho; i++) {
-    //         System.out.print(rotulos[i] + "[" + i + "] ");
-    //         Node atual = listaAdj[i].head;
-    //         while (atual != null) {
-    //             System.out.print("-> " + rotulos[atual.destino] + "[" + atual.destino + "](peso:" + atual.peso + ") ");
-    //             atual = atual.proximo;
-    //         }
-    //         System.out.println();
-    //     }
-    // }
+    //imprime a lista de adjacencias do grafo adaptado para Hash 
+    public void imprime_adjacencias() {
+        for (Map.Entry<String, Vertice> entrada : tabelaAdjacencias.entrySet()) {
+            System.out.println(entrada.getKey() + " ");
+            Vertice atual = entrada.getValue();
+
+            for(Map.Entry<String, Integer> adjacente : atual.adjacentes.entrySet()) {
+                System.out.print("-> "  + "[" + adjacente.getKey() + "](peso:" + adjacente.getValue() + ") ");
+            }
+        
+            System.out.println();
+        }
+    }
+
+    public void imprime_maiores() {
+        System.out.println(" Maiores Entradas");
+        for (int i = 0; i < maioresEntradas.length; i++) {
+            if (maioresEntradas[i] != null) {
+                System.out.println((i + 1) + ". " + maioresEntradas[i].email + " - Grau de Entrada: " + maioresEntradas[i].grauEntrada);
+            }
+        }
+
+        System.out.println("\nMaiores Saídas");
+        for (int i = 0; i < maioresSaidas.length; i++) {
+            if (maioresSaidas[i] != null) {
+                System.out.println((i + 1) + ". " + maioresSaidas[i].email + " - Grau de Saída: " + maioresSaidas[i].grauSaida);
+            }
+        }
+    }
 
     // public void seta_informacao(int indiceVertice, String valor) {
     //     if(validaVertice(indiceVertice)){
