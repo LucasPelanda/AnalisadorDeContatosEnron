@@ -7,7 +7,6 @@ import java.util.Map;
 public class Grafo {
     // ATRIBUTOS DO GRAFO
     private HashMap<String, Vertice> tabelaAdjacencias; 
-    public int tamanho;
     public Vertice[] maioresSaidas;
     public Vertice[] maioresEntradas;
 
@@ -16,8 +15,7 @@ public class Grafo {
     //private static final boolean NAOMEMBRO = false;
     //private static final int INFINITO = 999999999;
 
-    public Grafo(int tamanho) {
-        this.tamanho = tamanho;
+    public Grafo() {
         this.tabelaAdjacencias = new HashMap<>();
         this.maioresEntradas = new Vertice[20];
         this.maioresSaidas = new Vertice[20];
@@ -35,20 +33,17 @@ public class Grafo {
         tabelaAdjacencias.get(origem).adicionarDestinatario(destino);
         tabelaAdjacencias.get(destino).adicionarRemetente();
 
-        // TODO: implementar lógica para comparar vertices com maior grau de entrada e saida
         ajustarMaiores(tabelaAdjacencias.get(origem), tabelaAdjacencias.get(destino));
     }
 
     public void ajustarMaiores(Vertice origem, Vertice destino) {
 
-
         // Como vamos usar só um metodo para ajustar tanto saida qunato entrada dei break no for em vez de return 
         boolean achouEntrada = false;
-
         
         for (int i = 0; i < maioresEntradas.length; i++) {
 
-            //se o existe espaço vazio comola o email lá
+            //se existe espaço vazio coloca o email lá
             if (maioresEntradas[i] == null) {
                 maioresEntradas[i] = destino;
                 achouEntrada = true;
