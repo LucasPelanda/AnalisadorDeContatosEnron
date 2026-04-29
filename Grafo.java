@@ -130,81 +130,6 @@ public class Grafo {
         }
     }
 
-    // public void seta_informacao(int indiceVertice, String valor) {
-    //     if(validaVertice(indiceVertice)){
-    //         rotulos[indiceVertice] = valor;
-    //     }
-
-    // }
-
-    // public int adjacentes(int indiceVertice, int[] adjacentes) {
-    //     if(validaVertice(indiceVertice)){
-    //         int quantidade = 0;
-    //         Node atual = listaAdj[indiceVertice].head;
-    //         while (atual != null) {
-    //             adjacentes[quantidade] = atual.destino;
-    //             quantidade++;
-    //             atual = atual.proximo;
-    //         }
-    //         return quantidade;
-    //     }
-    //     else{
-    //         return 0;
-    //     }
-    // }
-
-    // public boolean[][] matrizAdjacenciaBooleana() {
-    //     boolean[][] matriz = new boolean[tamanho][tamanho];
-    //     for (int i = 0; i < tamanho; i++) {
-    //         Node atual = listaAdj[i].head;
-    //         while (atual != null) {
-    //             matriz[i][atual.destino] = true;
-    //             atual = atual.proximo;
-    //         }
-    //     }
-    //     return matriz;
-    // }
-
-    // public boolean[][] fechamentoTransitivoWarshall() {
-    //     boolean[][] m = matrizAdjacenciaBooleana();
-    //     boolean[][] fechamento = new boolean[tamanho][tamanho];
-    //     fechamento(m, fechamento);
-    //     return fechamento;
-    // }
-
-    // public void fechamento(boolean[][] m, boolean[][] fechamento) {
-    //     int i;
-    //     int j;
-    //     int k;
-    //     // inicializacao da matriz de fechamento
-    //     for (i = 0; i < tamanho; i++) {
-    //         for (j = 0; j < tamanho; j++) {
-    //             fechamento[i][j] = m[i][j];
-    //         }
-    //     }
-    //     // algoritmo de Warshall
-    //     for (k = 0; k < tamanho; k++) {
-    //         for (i = 0; i < tamanho; i++) {
-    //             if (fechamento[i][k]) {
-    //                 for (j = 0; j < tamanho; j++) {
-    //                     fechamento[i][j] = fechamento[i][j] || fechamento[k][j];
-    //                 }
-    //             }
-    //         }
-    //     }
-    // }
-
-    // private int peso(int origem, int destino) {
-    //     Node atual = listaAdj[origem].head;
-    //     while (atual != null) {
-    //         if (atual.destino == destino) {
-    //             return atual.peso;
-    //         }
-    //         atual = atual.proximo;
-    //     }
-    //     return INFINITO;
-    // }
-
     // public int melhorCaminho(int s, int t) {
     //     if(!validaVertice(s) || !validaVertice(t)) return INFINITO;
 
@@ -278,37 +203,5 @@ public class Grafo {
     //         }
     //     }
     //     System.out.println(rotulos[i]);
-    // }
-
-    // public static void main(String[] args) {
-    //     System.out.println("=== Testes Warshall ===");
-    //     Grafo grafoWarshall = new Grafo(4);
-    //     grafoWarshall.cria_adjacencia(0, 1, 1);
-    //     grafoWarshall.cria_adjacencia(1, 2, 1);
-    //     grafoWarshall.cria_adjacencia(2, 3, 1);
-    //     boolean[][] matrizFechamento = grafoWarshall.fechamentoTransitivoWarshall();
-    //     System.out.println(matrizFechamento[0][3] ? "OK: 0 alcanca 3" : "ERRO: 0 deveria alcancar 3");
-    //     System.out.println(!matrizFechamento[3][0] ? "OK: 3 nao alcanca 0" : "ERRO: 3 nao deveria alcancar 0");
-
-    //     System.out.println("\n=== Testes Dijkstra ===");
-    //     Grafo grafoDijkstra = new Grafo(5);
-    //     grafoDijkstra.seta_informacao(0, "A");
-    //     grafoDijkstra.seta_informacao(1, "B");
-    //     grafoDijkstra.seta_informacao(2, "C");
-    //     grafoDijkstra.seta_informacao(3, "D");
-    //     grafoDijkstra.seta_informacao(4, "E");
-
-    //     grafoDijkstra.cria_adjacencia(0, 1, 10);
-    //     grafoDijkstra.cria_adjacencia(0, 2, 3);
-    //     grafoDijkstra.cria_adjacencia(2, 1, 1);
-    //     grafoDijkstra.cria_adjacencia(1, 3, 2);
-    //     grafoDijkstra.cria_adjacencia(2, 4, 2);
-    //     grafoDijkstra.cria_adjacencia(4, 3, 1);
-
-    //     int distanciaMinima = grafoDijkstra.melhorCaminho(0, 3);
-    //     System.out.println(distanciaMinima == 6 ? "distancia minima = 6" : "distancia minima deveria ser 6");
-    //     System.out.print("Caminho encontrado de D a A: ");
-    //     grafoDijkstra.imprimeCaminho(0, 3);
-
     // }
 }
