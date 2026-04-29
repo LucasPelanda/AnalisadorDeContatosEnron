@@ -6,8 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 
 public class Leitor {
-    // TODO: verificar com o professor casos em que o "To:" é vazio e contem apenas
-    // destinatarios no CC
     public void preencherGrafo(Grafo g) {
         String caminho = "Amostra Enron";
 
@@ -90,8 +88,8 @@ public class Leitor {
         }
 
         if (remetente.isEmpty() || destinatario.isEmpty()) {
-            System.out.println("Verificar: " + email.getAbsolutePath());
-        }
+            return new String[0];        }
+        
         String[] remetenteDestinatario = { remetente, destinatario };
         return remetenteDestinatario;
     }
