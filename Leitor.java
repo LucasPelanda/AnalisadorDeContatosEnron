@@ -6,19 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Leitor {
-    // TODO: verificar com o professor casos em que o "To:" é vazio e contem apenas destinatarios no CC
-    public void preencherGrafo(Grafo g){
+    public void preencherGrafo(Grafo g) {
         String caminho = "Amostra Enron";
 
         // Lista os diretorios dentro da pasta que representam os usuarios
         File pastaPrincipal = new File(caminho);
-        if(!pastaPrincipal.exists()){
+        if (!pastaPrincipal.exists()) {
             System.out.println("Pasta principal não encontrada");
             return;
         }
 
         File[] pessoas = pastaPrincipal.listFiles();
-        for(File pastaPessoa : pessoas){
+        for (File pastaPessoa : pessoas) {
             List<File> emails = armazenarEmails(pastaPessoa);
 
             for(File email : emails){
@@ -37,23 +36,24 @@ public class Leitor {
 
     /**
      * Entra no diretório sent do usuario e armazena os arquivos dentro dele
+     * 
      * @param pastaPessoa
      * @return apenas os arquivos dentro da pasta sent
      */
-    public List<File> armazenarEmails(File pastaPessoa){
+    public List<File> armazenarEmails(File pastaPessoa) {
         List<File> emailsFiltrados = new ArrayList<>();
-        if (pastaPessoa == null || !pastaPessoa.isDirectory()){
+        if (pastaPessoa == null || !pastaPessoa.isDirectory()) {
             return emailsFiltrados;
         }
 
         File pastaSent = new File(pastaPessoa, "sent");
-        if (!pastaSent.exists() || !pastaSent.isDirectory()){
+        if (!pastaSent.exists() || !pastaSent.isDirectory()) {
             return emailsFiltrados;
         }
 
         File[] emails = pastaSent.listFiles();
-        for(File email : emails){
-            if(email.isFile()){
+        for (File email : emails) {
+            if (email.isFile()) {
                 emailsFiltrados.add(email);
             }
         }
