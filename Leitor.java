@@ -1,9 +1,9 @@
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Leitor {
     // TODO: verificar com o professor casos em que o "To:" é vazio e contem apenas destinatarios no CC
@@ -21,16 +21,16 @@ public class Leitor {
         for(File pastaPessoa : pessoas){
             List<File> emails = armazenarEmails(pastaPessoa);
 
-            // remetentesDestinatarios[remetente, destinatario]
-            List<String[]> remetentesDestinatarios = new ArrayList<>();
             for(File email : emails){
-                String[] remetenteDestinatario = lerEmail(email);
-                remetentesDestinatarios.add(remetenteDestinatario);
-            }
-
-            for(String[] remetenteDestinatario : remetentesDestinatarios){
-                if(remetenteDestinatario.length == 0 || remetenteDestinatario[0].isEmpty() || remetenteDestinatario[1].isEmpty()) continue; 
-                g.adicionarMensagem(remetenteDestinatario[0], remetenteDestinatario[1]);
+                List<String> remetenteDestinatario = lerEmail(email);
+                if(remetenteDestinatario.size() == 0){
+                    continue;
+                }
+                String remetente = remetenteDestinatario.get(0);
+                for(int i = 1; i < remetenteDestinatario.size(); i++){
+                    String destinatario = remetenteDestinatario.get(i);
+                    g.adicionarMensagem(remetente, destinatario);
+                }
             }
         }
     }
@@ -60,7 +60,12 @@ public class Leitor {
         return emailsFiltrados;
     }
 
-    public String[] lerEmail(File email){
+    /**
+     * 
+     * @param email arquivo de texto que contem o email
+     * @return {remetete, destinatario1, destinatario2, ...}
+     */
+    public List<String> lerEmail(File email){
         List<String> linhas = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(email))) {
             String linha;
@@ -70,26 +75,25 @@ public class Leitor {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        
-        String remetente = "";
-        String destinatario = "";
-        for(String linha : linhas){
-            if(!remetente.isEmpty() && !destinatario.isEmpty()){
-                break;
-            }
 
-            if(linha.contains("From: ") && linha.contains("@")){
-                remetente = linha.split(" ")[1];
-            }
-            else if(linha.contains("To: ") && linha.contains("@")){
-                destinatario = linha.split(" ")[1];
-            }
-        }
+        List<String> resultado = new ArrayList<>();
 
-        if(remetente.isEmpty() || destinatario.isEmpty()){
+        if(!linhas.get(2).contains("From") || !linhas.get(3).contains("To")){
             System.out.println("Verificar: " + email.getAbsolutePath());
+            return new ArrayList<>();
         }
-        String[] remetenteDestinatario = {remetente, destinatario};
-        return remetenteDestinatario;
+        
+        resultado.add(linhas.get(3).substring(5).trim());
+        String[] destinatarios = linhas.get(4).substring(3).replace(" ", "").split(",");
+
+        for(String destinatario : destinatarios){
+            resultado.add(destinatario);
+        }
+
+        if(resultado.size() <= 1){
+            System.out.println("Verificar: " + email.getAbsolutePath());
+            return new ArrayList<>();
+        }
+        return resultado;
     }
 }
