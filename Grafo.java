@@ -43,7 +43,6 @@ public class Grafo {
     }
 
     public void ajustarMaiores(Vertice origem, Vertice destino) {
-
         // Como vamos usar só um metodo para ajustar tanto saida qunato entrada dei break no for em vez de return 
         boolean achouEntrada = false;
         
@@ -97,14 +96,6 @@ public class Grafo {
             return Integer.compare(b.grauSaida, a.grauSaida);
         });
     }
-
-
-
-    // public void remove_adjacencia(int origem, int destino) {
-    //     if(validaVertice(origem) && validaVertice(destino)){
-    //         listaAdj[origem].remover(destino);
-    //     }  
-    // }
 
     //imprime a lista de adjacencias do grafo adaptado para Hash 
     public void imprime_adjacencias() {

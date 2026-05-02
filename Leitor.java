@@ -79,7 +79,7 @@ public class Leitor {
         List<String> resultado = new ArrayList<>();
 
         if(!linhas.get(2).contains("From") || !linhas.get(3).contains("To")){
-            System.out.println("Verificar: " + email.getAbsolutePath());
+            // System.out.println("Verificar: " + email.getAbsolutePath());
             return new ArrayList<>();
         }
         

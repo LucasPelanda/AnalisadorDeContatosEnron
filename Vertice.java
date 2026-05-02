@@ -19,10 +19,10 @@ public class Vertice {
      * @param destino email adjacente
      */
     public void adicionarDestinatario(String destino){
+        grauSaida++;
         
         if(!adjacentes.containsKey(destino)){
             adjacentes.put(destino, 1);
-            grauSaida++;
             return;
         }
 
