@@ -83,15 +83,15 @@ public class Leitor {
             return new ArrayList<>();
         }
         
-        resultado.add(linhas.get(3).substring(5).trim());
-        String[] destinatarios = linhas.get(4).substring(3).replace(" ", "").split(",");
+        resultado.add(linhas.get(2).substring(5).trim());
+        String[] destinatarios = linhas.get(3).substring(3).replace(" ", "").split(",");
 
         for(String destinatario : destinatarios){
             resultado.add(destinatario);
         }
 
         if(resultado.size() <= 1){
-            System.out.println("Verificar: " + email.getAbsolutePath());
+            // System.out.println("Verificar: " + email.getAbsolutePath());
             return new ArrayList<>();
         }
         return resultado;

@@ -221,8 +221,6 @@ public class Grafo {
     }
 
     public List<String> buscaLargura(String origem, String destino) {
-
-
         //Caso um deles não exista
         if (!tabelaAdjacencias.containsKey(origem)) {
             return null;
@@ -232,18 +230,13 @@ public class Grafo {
             return null;
         }
 
-
-
         Fila fila = new Fila();   
         HashSet<String> visitados = new HashSet<>(); // se já foi visitado.
         HashMap<String, String> ListaDeVisitados = new HashMap<>(); // Armazena os passos anteriores para reconstruir o caminho
 
-
-
         fila.enfileirar(origem);
         visitados.add(origem);
         ListaDeVisitados.put(origem, null); // o Antes do vertice de origem é nulo
-
 
         while (!fila.filaVazia()) {
 
@@ -258,8 +251,7 @@ public class Grafo {
                     passo = ListaDeVisitados.get(passo); // Move para o passo anterior
                 }
                 return caminhoEncontrado;
-            }
-        
+            } 
 
             for (Map.Entry<String, Integer> adjacente : tabelaAdjacencias.get(atual).adjacentes.entrySet()) {
                 String vizinho = adjacente.getKey();
