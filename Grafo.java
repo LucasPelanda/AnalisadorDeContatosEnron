@@ -3,6 +3,9 @@
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ArrayList;
 
 public class Grafo {
     // ATRIBUTOS DO GRAFO
@@ -215,5 +218,60 @@ public class Grafo {
             }
         }
         System.out.println("\nDependencia acumulada no caminho: " + custoAcumulado);
+    }
+
+    public List<String> buscaLargura(String origem, String destino) {
+
+
+        //Caso um deles não exista
+        if (!tabelaAdjacencias.containsKey(origem)) {
+            return null;
+        }
+
+        if(!tabelaAdjacencias.containsKey(destino)){
+            return null;
+        }
+
+
+
+        Fila fila = new Fila();   
+        HashSet<String> visitados = new HashSet<>(); // se já foi visitado.
+        HashMap<String, String> ListaDeVisitados = new HashMap<>(); // Armazena os passos anteriores para reconstruir o caminho
+
+
+
+        fila.enfileirar(origem);
+        visitados.add(origem);
+        ListaDeVisitados.put(origem, null); // o Antes do vertice de origem é nulo
+
+
+        while (!fila.filaVazia()) {
+
+            String atual = fila.desenfileirar();
+
+            if (atual.equals(destino)) {
+                // Reconstruir o caminho percorrido
+                List<String> caminhoEncontrado = new ArrayList<>();
+                String passo = destino;
+                while (passo != null) {
+                    caminhoEncontrado.add(0, passo); // Adiciona o passo no início da lista
+                    passo = ListaDeVisitados.get(passo); // Move para o passo anterior
+                }
+                return caminhoEncontrado;
+            }
+        
+
+            for (Map.Entry<String, Integer> adjacente : tabelaAdjacencias.get(atual).adjacentes.entrySet()) {
+                String vizinho = adjacente.getKey();
+
+                if (!visitados.contains(vizinho)) {
+                    fila.enfileirar(vizinho);
+                    visitados.add(vizinho);
+                    ListaDeVisitados.put(vizinho, atual); // Armazena o passo anterior
+                }
+            }
+        }
+        return null; // Retorna null se não houver caminho entre origem e destino}
+    
     }
 }
