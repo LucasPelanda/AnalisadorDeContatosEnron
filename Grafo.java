@@ -11,14 +11,17 @@ public class Grafo {
     public Vertice[] maioresEntradas;
 
     // CONSTANTES PARA O MELHOR CAMINHO
-    //private static final boolean MEMBRO = true;
-    //private static final boolean NAOMEMBRO = false;
-    //private static final int INFINITO = 999999999;
+    private static final boolean MEMBRO = true;
+    private static final boolean NAOMEMBRO = false;
+    private static final double INFINITO = 999999999.0;
+    private HashMap<String, String> caminho;
 
     public Grafo() {
         this.tabelaAdjacencias = new HashMap<>();
         this.maioresEntradas = new Vertice[20];
         this.maioresSaidas = new Vertice[20];
+        this.caminho = new HashMap<>();
+
     }
 
     public void adicionarMensagem(String origem, String destino) {
@@ -130,78 +133,87 @@ public class Grafo {
         }
     }
 
-    // public int melhorCaminho(int s, int t) {
-    //     if(!validaVertice(s) || !validaVertice(t)) return INFINITO;
+    public double caminhosCritico(String s, String t) {
+        if (!tabelaAdjacencias.containsKey(s) || !tabelaAdjacencias.containsKey(t)) return INFINITO;
 
-    //     int distancia[] = new int[tamanho];
-    //     boolean perm[] = new boolean[tamanho];
-    //     int corrente;
-    //     int i;
-    //     int k = s;
-    //     int dc;
-    //     int menordist;
-    //     int novadist;
-    //     // inicializacao
-    //     for (i = 0; i < tamanho; ++i) {
-    //         perm[i] = NAOMEMBRO;
-    //         distancia[i] = INFINITO;
-    //         caminho[i] = -1;
-    //     }
+        HashMap<String, Double>  distancia = new HashMap<>();
+        HashMap<String, Boolean> perm      = new HashMap<>();
+        String corrente;
+        String k = s;
+        double dc;
+        double menordist;
+        double novadist;
 
-    //     perm[s] = MEMBRO;
-    //     distancia[s] = 0;
-    //     corrente = s;
-    //     while (corrente != t) {
-    //         menordist = INFINITO;
-    //         dc = distancia[corrente];
-    //         for (i = 0; i < tamanho; i++) {
-    //             if (!perm[i]) {
-    //                 if (dc != INFINITO) {
-    //                     novadist = dc + peso(corrente, i);
-    //                 } else {
-    //                     novadist = INFINITO;
-    //                 }
-    //                 if (novadist < distancia[i]) {
-    //                     distancia[i] = novadist;
-    //                     caminho[i] = corrente;
-    //                 }
-    //                 if (distancia[i] < menordist) {
-    //                     menordist = distancia[i];
-    //                     k = i;
-    //                 }
-    //             }
-    //         }
+        for (String email : tabelaAdjacencias.keySet()) {
+            perm.put(email, NAOMEMBRO);
+            distancia.put(email, INFINITO);
+            caminho.put(email, null);        
+        }
 
-    //         if (menordist == INFINITO) {
-    //             return INFINITO;
-    //         }
+        perm.put(s, MEMBRO);
+        distancia.put(s, 0.0);
+        corrente = s;
 
-    //         corrente = k;
-    //         perm[corrente] = MEMBRO;
-    //     }
-       
+        while (!corrente.equals(t)) {
+            menordist = INFINITO;
+            dc = distancia.get(corrente);
 
-    //     return distancia[t];
-    // }
+            for (String i : tabelaAdjacencias.keySet()) {
+                if (!perm.get(i)) {
+                    int pesoOriginal = tabelaAdjacencias.get(corrente).adjacentes.getOrDefault(i, 0);
 
+                    if (dc != INFINITO && pesoOriginal > 0) {
+                        novadist = dc + (1.0 / pesoOriginal); // aqui faz o inveros porque tem que pegar o maior peso
+                    } else {
+                        novadist = INFINITO;
+                    }
 
-    // public void imprimeCaminho(int s, int t) {
-    //     if(!validaVertice(s) || !validaVertice(t)) return;
+                    if (novadist < distancia.get(i)) {
+                        distancia.put(i, novadist);
+                        caminho.put(i, corrente);
+                    }
+                    if (distancia.get(i) < menordist) {
+                        menordist = distancia.get(i);
+                        k = i;
+                    }
+                }
+            }
 
-    //     if (caminho[t] == -1 && s != t) {
-    //         System.out.println("Nao existe caminho entre os vertices informados.");
-    //         return;
-    //     }
-    //     int i = caminho[t];
-    //     System.out.print(rotulos[t] + " ");
-    //     while (i != s) {
-    //         System.out.print(rotulos[i] + " ");
-    //         i = caminho[i];
-    //         if (i == -1) {
-    //             System.out.println();
-    //             return;
-    //         }
-    //     }
-    //     System.out.println(rotulos[i]);
-    // }
+            if (menordist == INFINITO) {
+                return INFINITO;
+            }
+
+            corrente = k;
+            perm.put(corrente, MEMBRO);
+        }
+
+        return distancia.get(t);
+    }
+
+    public void imprimeCaminhosCritico(String s, String t) {
+        if (!tabelaAdjacencias.containsKey(s) || !tabelaAdjacencias.containsKey(t)) return;
+
+        if (caminho.get(t) == null && !s.equals(t)) {
+            System.out.println("Nao existe caminho entre os vertices informados.");
+            return;
+        }
+
+        java.util.ArrayList<String> nos = new java.util.ArrayList<>();
+        String i = t;
+        while (i != null) {
+            nos.add(0, i);
+            i = caminho.get(i);
+        }
+
+        int custoAcumulado = 0;
+        for (int idx = 0; idx < nos.size(); idx++) {
+            System.out.print(nos.get(idx));
+            if (idx < nos.size() - 1) {
+                int peso = tabelaAdjacencias.get(nos.get(idx)).adjacentes.getOrDefault(nos.get(idx + 1), 0);
+                custoAcumulado += peso;
+                System.out.print(" -(" + peso + ")-> ");
+            }
+        }
+        System.out.println("\nDependencia acumulada no caminho: " + custoAcumulado);
+    }
 }
