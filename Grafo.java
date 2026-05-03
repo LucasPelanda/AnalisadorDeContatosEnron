@@ -43,6 +43,7 @@ public class Grafo {
     }
 
     public void ajustarMaiores(Vertice origem, Vertice destino) {
+
         // Como vamos usar só um metodo para ajustar tanto saida qunato entrada dei break no for em vez de return 
         boolean achouEntrada = false;
         
@@ -96,6 +97,14 @@ public class Grafo {
             return Integer.compare(b.grauSaida, a.grauSaida);
         });
     }
+
+
+
+    // public void remove_adjacencia(int origem, int destino) {
+    //     if(validaVertice(origem) && validaVertice(destino)){
+    //         listaAdj[origem].remover(destino);
+    //     }  
+    // }
 
     //imprime a lista de adjacencias do grafo adaptado para Hash 
     public void imprime_adjacencias() {
@@ -212,6 +221,8 @@ public class Grafo {
     }
 
     public List<String> buscaLargura(String origem, String destino) {
+
+
         //Caso um deles não exista
         if (!tabelaAdjacencias.containsKey(origem)) {
             return null;
@@ -221,13 +232,18 @@ public class Grafo {
             return null;
         }
 
+
+
         Fila fila = new Fila();   
         HashSet<String> visitados = new HashSet<>(); // se já foi visitado.
         HashMap<String, String> ListaDeVisitados = new HashMap<>(); // Armazena os passos anteriores para reconstruir o caminho
 
+
+
         fila.enfileirar(origem);
         visitados.add(origem);
         ListaDeVisitados.put(origem, null); // o Antes do vertice de origem é nulo
+
 
         while (!fila.filaVazia()) {
 
@@ -242,7 +258,8 @@ public class Grafo {
                     passo = ListaDeVisitados.get(passo); // Move para o passo anterior
                 }
                 return caminhoEncontrado;
-            } 
+            }
+        
 
             for (Map.Entry<String, Integer> adjacente : tabelaAdjacencias.get(atual).adjacentes.entrySet()) {
                 String vizinho = adjacente.getKey();
@@ -257,4 +274,103 @@ public class Grafo {
         return null; // Retorna null se não houver caminho entre origem e destino}
     
     }
+
+    private static class ResultadoDistancia {
+        List<String> nos;
+        HashMap<String, String> anterior;
+        HashMap<String, Integer> distancias;
+
+        ResultadoDistancia() {
+            this.nos = new ArrayList<>();
+            this.anterior = new HashMap<>();
+            this.distancias = new HashMap<>();
+        }
+    }
+
+    private ResultadoDistancia calcularNosDistanciaD(String origem, int d) {
+        ResultadoDistancia resultado = new ResultadoDistancia();
+
+        if (!tabelaAdjacencias.containsKey(origem)) {
+            return resultado; //origem não existe no grafo, retorna resultado vazio
+        }
+
+        if (d < 0) {
+            return resultado; //se a distancia for invalida, retorna resultado vazio
+        }
+
+        Fila fila = new Fila();
+        HashSet<String> visitados = new HashSet<>(); //garante que cada no seja visitado apenas uma vez
+
+        fila.enfileirar(origem);
+        visitados.add(origem);
+
+        resultado.distancias.put(origem, 0); //a origem começa com distancia 0, pq ainda nao foi percorrida nenhuma aresta
+        resultado.anterior.put(origem, null);
+
+        while (!fila.filaVazia()) {
+            String atual = fila.desenfileirar();
+            int distanciaAtual = resultado.distancias.get(atual);
+
+            if (distanciaAtual == d) {
+                resultado.nos.add(atual); 
+                continue;
+            }
+
+            for (Map.Entry<String, Integer> adjacente : tabelaAdjacencias.get(atual).adjacentes.entrySet()) {
+                String vizinho = adjacente.getKey();
+
+                if (!visitados.contains(vizinho)) {
+                    visitados.add(vizinho);
+                    fila.enfileirar(vizinho);
+
+                    resultado.distancias.put(vizinho, distanciaAtual + 1); 
+                    resultado.anterior.put(vizinho, atual);
+                }
+            }
+        }
+
+        return resultado;
+    }
+
+    public List<String> nosDistanciaD(String origem, int d) {
+        return calcularNosDistanciaD(origem, d).nos;
+    }
+
+    private List<String> montarCaminho(String destino, HashMap<String, String> anterior) {
+        List<String> caminho = new ArrayList<>(); //reconstroi o caminho do no encontrado ate a origem usando o mapa de anteriores
+
+        String atual = destino;
+
+        while (atual != null) {
+            caminho.add(0, atual);
+            atual = anterior.get(atual);
+        }
+
+        return caminho;
+    }
+
+    public void imprimeNosDistanciaD(String origem, int d) {
+        ResultadoDistancia resultado = calcularNosDistanciaD(origem, d);
+
+        if (!tabelaAdjacencias.containsKey(origem)) {
+            System.out.println("Vertice de origem nao encontrado.");
+            return;
+        }
+
+        if (resultado.nos.isEmpty()) {
+            System.out.println("Nenhum no encontrado a distancia " + d + " de " + origem);
+            return;
+        }
+
+        System.out.println("Nos a distancia " + d + " de " + origem + ":");
+
+        for (String no : resultado.nos) {
+            List<String> caminho = montarCaminho(no, resultado.anterior);
+
+            System.out.println("\nNo encontrado: " + no);
+            System.out.println("Tamanho do caminho: " + resultado.distancias.get(no));
+            System.out.println("Caminho: " + String.join(" -> ", caminho));
+        }
+    }
+
 }
