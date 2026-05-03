@@ -7,8 +7,6 @@ public class TesteLeitor {
 
         l.preencherGrafo(grafo);
 
-        grafo.imprime_maiores();
-
         grafo.caminhosCritico("drew.fossum@enron.com", "lee.huber@enron.com");
         grafo.imprimeCaminhosCritico("drew.fossum@enron.com", "lee.huber@enron.com");
 
