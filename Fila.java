@@ -3,7 +3,6 @@ public class Fila {
     int fim;
     String[] fila;
 
-
     public Fila() {
         this.fila = new String[100];
         this.inicio = 0;

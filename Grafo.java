@@ -213,11 +213,7 @@ public class Grafo {
 
     public List<String> buscaLargura(String origem, String destino) {
         //Caso um deles não exista
-        if (!tabelaAdjacencias.containsKey(origem)) {
-            return null;
-        }
-
-        if(!tabelaAdjacencias.containsKey(destino)){
+        if (!tabelaAdjacencias.containsKey(origem) || !tabelaAdjacencias.containsKey(destino)) {
             return null;
         }
 
@@ -255,6 +251,53 @@ public class Grafo {
             }
         }
         return null; // Retorna null se não houver caminho entre origem e destino}
-    
+    }
+
+    public List<String> buscaProfundidade(String origem, String destino) {
+        // Caso um deles não exista
+        if (!tabelaAdjacencias.containsKey(origem) || !tabelaAdjacencias.containsKey(destino)) {
+            return null;
+        }
+
+        Pilha pilha = new Pilha();
+        Node noOrigem = new Node(origem);
+        pilha.inserir(noOrigem);
+        
+        HashSet<String> visitados = new HashSet<>();
+        HashMap<String, String> caminhoVisitados = new HashMap<>();
+        
+        visitados.add(origem);
+        caminhoVisitados.put(origem, null);
+        
+        while (pilha.primeiro != null) {
+            Node atual = pilha.primeiro;
+            String email = atual.valor;
+            pilha.remover();
+            
+            if (email.equals(destino)) {
+                // Reconstruir o caminho percorrido
+                List<String> caminhoEncontrado = new ArrayList<>();
+                String passo = destino;
+                while (passo != null) {
+                    caminhoEncontrado.add(0, passo);
+                    passo = caminhoVisitados.get(passo);
+                }
+                return caminhoEncontrado;
+            }
+            
+            for (Map.Entry<String, Integer> adjacente : tabelaAdjacencias.get(email).adjacentes.entrySet()) {
+                String vizinho = adjacente.getKey();
+                
+                if (!visitados.contains(vizinho)) {
+                    Node noVizinho = new Node(vizinho);
+                    noVizinho.valor = vizinho;
+                    pilha.inserir(noVizinho);
+                    visitados.add(vizinho);
+                    caminhoVisitados.put(vizinho, email);
+                }
+            }
+        }
+        
+        return null;
     }
 }
