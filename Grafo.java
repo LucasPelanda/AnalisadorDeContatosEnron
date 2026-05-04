@@ -226,13 +226,15 @@ public class Grafo {
         HashSet<String> visitados = new HashSet<>(); // se já foi visitado.
         HashMap<String, String> ListaDeVisitados = new HashMap<>(); // Armazena os passos anteriores para reconstruir o caminho
 
-        fila.enfileirar(origem);
+        Node noOrigem = new Node(origem);
+        fila.enfileirar(noOrigem);
         visitados.add(origem);
         ListaDeVisitados.put(origem, null); // o Antes do vertice de origem é nulo
 
         while (!fila.filaVazia()) {
 
-            String atual = fila.desenfileirar();
+            Node atualNode = fila.desenfileirar();
+            String atual = atualNode.valor;
 
             if (atual.equals(destino)) {
                 // Reconstruir o caminho percorrido
@@ -250,7 +252,8 @@ public class Grafo {
                 String vizinho = adjacente.getKey();
 
                 if (!visitados.contains(vizinho)) {
-                    fila.enfileirar(vizinho);
+                    Node noVizinho = new Node(vizinho);
+                    fila.enfileirar(noVizinho);
                     visitados.add(vizinho);
                     ListaDeVisitados.put(vizinho, atual); // Armazena o passo anterior
                 }
@@ -333,14 +336,16 @@ public class Grafo {
         Fila fila = new Fila();
         HashSet<String> visitados = new HashSet<>(); //garante que cada no seja visitado apenas uma vez
 
-        fila.enfileirar(origem);
+        Node noOrigem = new Node(origem);
+        fila.enfileirar(noOrigem);
         visitados.add(origem);
 
         resultado.distancias.put(origem, 0); //a origem começa com distancia 0, pq ainda nao foi percorrida nenhuma aresta
         resultado.anterior.put(origem, null);
 
         while (!fila.filaVazia()) {
-            String atual = fila.desenfileirar();
+            Node atualNode = fila.desenfileirar();
+            String atual = atualNode.valor;
             int distanciaAtual = resultado.distancias.get(atual);
 
             if (distanciaAtual == d) {
@@ -353,7 +358,8 @@ public class Grafo {
 
                 if (!visitados.contains(vizinho)) {
                     visitados.add(vizinho);
-                    fila.enfileirar(vizinho);
+                    Node noVizinho = new Node(vizinho);
+                    fila.enfileirar(noVizinho);
 
                     resultado.distancias.put(vizinho, distanciaAtual + 1); 
                     resultado.anterior.put(vizinho, atual);
