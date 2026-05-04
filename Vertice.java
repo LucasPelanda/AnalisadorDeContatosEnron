@@ -23,6 +23,7 @@ public class Vertice {
         
         if(!adjacentes.containsKey(destino)){
             adjacentes.put(destino, 1);
+            Grafo.qtdArestas ++;
             return;
         }
 

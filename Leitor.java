@@ -90,6 +90,14 @@ public class Leitor {
             resultado.add(destinatario);
         }
 
+        int i = 4;
+        while(!linhas.get(i).contains("Subject") && !linhas.get(i).contains("Mime-Version") && !linhas.get(i).contains("Content-Type")){
+            for(String destinatario : linhas.get(i).substring(1).replace(" ", "").split(",")){
+                resultado.add(destinatario);
+            }
+            i++;
+        }
+
         if(resultado.size() <= 1){
             // System.out.println("Verificar: " + email.getAbsolutePath());
             return new ArrayList<>();

@@ -12,6 +12,8 @@ public class Grafo {
     private HashMap<String, Vertice> tabelaAdjacencias; 
     public Vertice[] maioresSaidas;
     public Vertice[] maioresEntradas;
+    public static int qtdArestas = 0;
+    public static int qtdVertices = 0;
 
     // CONSTANTES PARA O MELHOR CAMINHO
     private static final boolean MEMBRO = true;
@@ -24,16 +26,17 @@ public class Grafo {
         this.maioresEntradas = new Vertice[20];
         this.maioresSaidas = new Vertice[20];
         this.caminho = new HashMap<>();
-
     }
 
     public void adicionarMensagem(String origem, String destino) {
         // CRIA VERTICES CASO NAO EXISTAM
         if(!tabelaAdjacencias.containsKey(origem)){
             tabelaAdjacencias.put(origem, new Vertice(origem));
+            Grafo.qtdVertices++;
         }
         if(!tabelaAdjacencias.containsKey(destino)){
             tabelaAdjacencias.put(destino, new Vertice(destino));
+            Grafo.qtdVertices++;
         }
 
         tabelaAdjacencias.get(origem).adicionarDestinatario(destino);
@@ -97,14 +100,6 @@ public class Grafo {
             return Integer.compare(b.grauSaida, a.grauSaida);
         });
     }
-
-
-
-    // public void remove_adjacencia(int origem, int destino) {
-    //     if(validaVertice(origem) && validaVertice(destino)){
-    //         listaAdj[origem].remover(destino);
-    //     }  
-    // }
 
     //imprime a lista de adjacencias do grafo adaptado para Hash 
     public void imprime_adjacencias() {
