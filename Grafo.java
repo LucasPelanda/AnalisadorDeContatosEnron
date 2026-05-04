@@ -104,14 +104,16 @@ public class Grafo {
     //imprime a lista de adjacencias do grafo adaptado para Hash 
     public void imprime_adjacencias() {
         for (Map.Entry<String, Vertice> entrada : tabelaAdjacencias.entrySet()) {
-            System.out.println(entrada.getKey() + " ");
+            
             Vertice atual = entrada.getValue();
 
-            for(Map.Entry<String, Integer> adjacente : atual.adjacentes.entrySet()) {
-                System.out.print("-> "  + "[" + adjacente.getKey() + "](peso:" + adjacente.getValue() + ") ");
-            }
-        
-            System.out.println();
+            if(atual.adjacentes.size() > 1){
+                System.out.println(entrada.getKey() + " ");
+                for(Map.Entry<String, Integer> adjacente : atual.adjacentes.entrySet()) {
+                    System.out.print("-> "  + "[" + adjacente.getKey() + "](peso:" + adjacente.getValue() + ") ");
+                }
+                System.out.println();
+            }  
         }
     }
 
@@ -217,9 +219,8 @@ public class Grafo {
 
     public List<String> buscaLargura(String origem, String destino) {
 
-        //Caso um deles não exista
         if (!tabelaAdjacencias.containsKey(origem) || !tabelaAdjacencias.containsKey(destino)) {
-            return null;
+            return new ArrayList<>();
         }
 
         Fila fila = new Fila();   
@@ -259,7 +260,7 @@ public class Grafo {
                 }
             }
         }
-        return null; // Retorna null se não houver caminho entre origem e destino}
+        return new ArrayList<>();
     }
 
     public List<String> buscaProfundidade(String origem, String destino) {

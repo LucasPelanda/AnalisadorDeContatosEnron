@@ -9,10 +9,10 @@ public class TesteLeitor {
         l.preencherGrafo(grafo, caminhoEmails);
 
         grafo.imprime_adjacencias();
-        grafo.caminhosCritico("larry.campbell@enron.com", "james.derrick@enron.com");
-        grafo.imprimeCaminhosCritico("larry.campbell@enron.com ", "james.derrick@enron.com");
+        grafo.caminhosCritico("rod.hayslett@enron.com", "martin.cuilla@enron.com");
+        grafo.imprimeCaminhosCritico("rod.hayslett@enron.com", "martin.cuilla@enron.com");
 
-        List<String> caminho = grafo.buscaProfundidade("larry.campbell@enron.com", "james.derrick@enron.com");
+        List<String> caminho = grafo.buscaProfundidade("rod.hayslett@enron.com", "martin.cuilla@enron.com");
         
         if(caminho.size() > 1){
             System.out.print(caminho.get(0));
