@@ -3,6 +3,7 @@ public class Node {
     public Node proximo; 
 
     public Node(String valor) {
+        this.valor = valor;
         this.proximo = null;
     }
 }

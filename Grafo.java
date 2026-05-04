@@ -19,7 +19,7 @@ public class Grafo {
     private static final boolean MEMBRO = true;
     private static final boolean NAOMEMBRO = false;
     private static final double INFINITO = 999999999.0;
-    private HashMap<String, String> caminho;
+    public HashMap<String, String> caminho;
 
     public Grafo() {
         this.tabelaAdjacencias = new HashMap<>();
@@ -196,7 +196,7 @@ public class Grafo {
             return;
         }
 
-        java.util.ArrayList<String> nos = new java.util.ArrayList<>();
+        ArrayList<String> nos = new ArrayList<>();
         String i = t;
         while (i != null) {
             nos.add(0, i);
@@ -217,24 +217,18 @@ public class Grafo {
 
     public List<String> buscaLargura(String origem, String destino) {
 
-
         //Caso um deles não exista
         if (!tabelaAdjacencias.containsKey(origem) || !tabelaAdjacencias.containsKey(destino)) {
             return null;
         }
 
-
-
         Fila fila = new Fila();   
         HashSet<String> visitados = new HashSet<>(); // se já foi visitado.
         HashMap<String, String> ListaDeVisitados = new HashMap<>(); // Armazena os passos anteriores para reconstruir o caminho
 
-
-
         fila.enfileirar(origem);
         visitados.add(origem);
         ListaDeVisitados.put(origem, null); // o Antes do vertice de origem é nulo
-
 
         while (!fila.filaVazia()) {
 
@@ -268,7 +262,7 @@ public class Grafo {
     public List<String> buscaProfundidade(String origem, String destino) {
         // Caso um deles não exista
         if (!tabelaAdjacencias.containsKey(origem) || !tabelaAdjacencias.containsKey(destino)) {
-            return null;
+            return new ArrayList<>();
         }
 
         Pilha pilha = new Pilha();
@@ -310,7 +304,7 @@ public class Grafo {
             }
         }
         
-        return null;
+        return new ArrayList<>();
     }
 
     private static class ResultadoDistancia {

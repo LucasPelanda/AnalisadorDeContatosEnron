@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Leitor {
-    public void preencherGrafo(Grafo g) {
-        String caminho = "Amostra Enron";
+    public void preencherGrafo(Grafo g, String caminho) {
 
         // Lista os diretorios dentro da pasta que representam os usuarios
         File pastaPrincipal = new File(caminho);
