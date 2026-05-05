@@ -118,7 +118,7 @@ public class Grafo {
     }
 
     public void imprime_maiores() {
-        System.out.println(" Maiores Entradas");
+        System.out.println("\nMaiores Entradas");
         for (int i = 0; i < maioresEntradas.length; i++) {
             if (maioresEntradas[i] != null) {
                 System.out.println((i + 1) + ". " + maioresEntradas[i].email + " - Grau de Entrada: " + maioresEntradas[i].grauEntrada);
@@ -191,7 +191,10 @@ public class Grafo {
     }
 
     public void imprimeCaminhosCritico(String s, String t) {
-        if (!tabelaAdjacencias.containsKey(s) || !tabelaAdjacencias.containsKey(t)) return;
+        if (!tabelaAdjacencias.containsKey(s) || !tabelaAdjacencias.containsKey(t)){
+            System.out.println("Não presente no grafo: " + s);
+            return;
+        } 
 
         if (caminho.get(t) == null && !s.equals(t)) {
             System.out.println("Nao existe caminho entre os vertices informados.");
@@ -406,10 +409,9 @@ public class Grafo {
         for (String no : resultado.nos) {
             List<String> caminho = montarCaminho(no, resultado.anterior);
 
-            System.out.println("\nNo encontrado: " + no);
+            System.out.println("\nNó encontrado: " + no);
             System.out.println("Tamanho do caminho: " + resultado.distancias.get(no));
             System.out.println("Caminho: " + String.join(" -> ", caminho));
         }
     }
-
 }
