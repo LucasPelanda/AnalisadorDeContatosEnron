@@ -1,5 +1,3 @@
-import java.util.List;
-
 public class TesteLeitor {
     public static void main(String[] args){
         Leitor l = new Leitor();
@@ -18,24 +16,12 @@ public class TesteLeitor {
 
         // BUSCAS
         System.out.println("BUSCA PROFUNDIDADE");
-        List<String> caminho = grafo.buscaProfundidade("rod.hayslett@enron.com", "martin.cuilla@enron.com");
-        if(caminho.size() > 0){
-            System.out.print(caminho.get(0));
-            for(int i = 1; i < caminho.size(); i++){
-                System.out.print(" -> " + caminho.get(i));
-            }
-            System.out.println("\n------------------------\n");
-        }
+        grafo.imprimeBuscaProfundidade("rod.hayslett@enron.com", "martin.cuilla@enron.com");
+        System.out.println("------------------------\n");
 
         System.out.println("BUSCA LARGURA");
-        caminho = grafo.buscaLargura("rod.hayslett@enron.com", "martin.cuilla@enron.com");
-        if(caminho.size() > 0){
-            System.out.print(caminho.get(0));
-            for(int i = 1; i < caminho.size(); i++){
-                System.out.print(" -> " + caminho.get(i));
-            }
-            System.out.println("\n------------------------\n");
-        }
+        grafo.imprimeBuscaLargura("rod.hayslett@enron.com", "martin.cuilla@enron.com");
+        System.out.println("------------------------\n");
 
         // CAMINHO CRITICO
         System.out.println("\nCAMINHO CRITICO");

@@ -137,7 +137,7 @@ public class Grafo {
         if (!tabelaAdjacencias.containsKey(s) || !tabelaAdjacencias.containsKey(t)) return INFINITO;
 
         HashMap<String, Double>  distancia = new HashMap<>();
-        HashMap<String, Boolean> perm      = new HashMap<>();
+        HashMap<String, Boolean> perm = new HashMap<>();
         String corrente;
         String k = s;
         double dc;
@@ -208,6 +208,11 @@ public class Grafo {
             i = caminho.get(i);
         }
 
+        imprimeCaminhoListaComPesos(nos);
+    }
+
+    // iprime caminho com os emails e pesos das arestas
+    private void imprimeCaminhoListaComPesos(List<String> nos) {
         int custoAcumulado = 0;
         for (int idx = 0; idx < nos.size(); idx++) {
             System.out.print(nos.get(idx));
@@ -218,6 +223,36 @@ public class Grafo {
             }
         }
         System.out.println("\nDependencia acumulada no caminho: " + custoAcumulado);
+    }
+
+    public void imprimeBuscaProfundidade(String s, String t) {
+        if (!tabelaAdjacencias.containsKey(s) || !tabelaAdjacencias.containsKey(t)) {
+            System.out.println("Não presente no grafo: " + s);
+            return;
+        }
+
+        List<String> nos = buscaProfundidade(s, t);
+        if (nos.isEmpty()) {
+            System.out.println("Nao existe caminho entre os vertices informados.");
+            return;
+        }
+
+        imprimeCaminhoListaComPesos(nos);
+    }
+
+    public void imprimeBuscaLargura(String s, String t) {
+        if (!tabelaAdjacencias.containsKey(s) || !tabelaAdjacencias.containsKey(t)) {
+            System.out.println("Não presente no grafo: " + s);
+            return;
+        }
+
+        List<String> nos = buscaLargura(s, t);
+        if (nos.isEmpty()) {
+            System.out.println("Nao existe caminho entre os vertices informados.");
+            return;
+        }
+
+        imprimeCaminhoListaComPesos(nos);
     }
 
     public List<String> buscaLargura(String origem, String destino) {
