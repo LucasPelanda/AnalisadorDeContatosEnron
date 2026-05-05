@@ -1,5 +1,7 @@
 # 📧 Analisador de Contatos Enron
 
+## Alunos: Davi Natume, Eduardo Teodoro, Lucas Pelanda, Pedro Favero
+
 > **Projeto Colaborativo I** — Bacharelado em Ciência da Computação  
 > 5º Período — Resolução de Problemas com Grafos
 

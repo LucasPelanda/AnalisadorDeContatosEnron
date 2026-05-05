@@ -1,4 +1,6 @@
-public class TesteLeitor {
+// Davi Natume, Eduardo Teodoro, Lucas Pelanda, Pedro Favero
+
+public class Main {
     public static void main(String[] args){
         Leitor l = new Leitor();
         Grafo grafo = new Grafo();
