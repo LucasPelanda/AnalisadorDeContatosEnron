@@ -349,18 +349,6 @@ public class Grafo {
         return new ArrayList<>();
     }
 
-    private static class ResultadoDistancia {
-        List<String> nos;
-        HashMap<String, String> anterior;
-        HashMap<String, Integer> distancias;
-
-        ResultadoDistancia() {
-            this.nos = new ArrayList<>();
-            this.anterior = new HashMap<>();
-            this.distancias = new HashMap<>();
-        }
-    }
-
     private ResultadoDistancia calcularNosDistanciaD(String origem, int d) {
         ResultadoDistancia resultado = new ResultadoDistancia();
 

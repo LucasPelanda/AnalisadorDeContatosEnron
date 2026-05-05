@@ -15,7 +15,7 @@ public class TesteLeitor {
         grafo.imprime_maiores();
 
         // BUSCAS
-        System.out.println("BUSCA PROFUNDIDADE");
+        System.out.println("\nBUSCA PROFUNDIDADE");
         grafo.imprimeBuscaProfundidade("rod.hayslett@enron.com", "martin.cuilla@enron.com");
         System.out.println("------------------------\n");
 
@@ -31,7 +31,7 @@ public class TesteLeitor {
 
         // NOS A DISTANCIA D
         System.out.println("\nNOS DE DISTANCIA");
-        grafo.imprimeNosDistanciaD("rod.hayslett@enron.com", 1);
+        grafo.imprimeNosDistanciaD("rod.hayslett@enron.com", 6);
         
     }
 }
