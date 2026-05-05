@@ -378,26 +378,13 @@ public class Grafo {
         return calcularNosDistanciaD(origem, d).nos;
     }
 
-    private List<String> montarCaminho(String destino, HashMap<String, String> anterior) {
-        List<String> caminho = new ArrayList<>(); //reconstroi o caminho do no encontrado ate a origem usando o mapa de anteriores
-
-        String atual = destino;
-
-        while (atual != null) {
-            caminho.add(0, atual);
-            atual = anterior.get(atual);
-        }
-
-        return caminho;
-    }
-
     public void imprimeNosDistanciaD(String origem, int d) {
-        ResultadoDistancia resultado = calcularNosDistanciaD(origem, d);
-
         if (!tabelaAdjacencias.containsKey(origem)) {
             System.out.println("Vertice de origem nao encontrado.");
             return;
         }
+
+        ResultadoDistancia resultado = calcularNosDistanciaD(origem, d);
 
         if (resultado.nos.isEmpty()) {
             System.out.println("Nenhum no encontrado a distancia " + d + " de " + origem);
@@ -408,10 +395,22 @@ public class Grafo {
 
         for (String no : resultado.nos) {
             List<String> caminho = montarCaminho(no, resultado.anterior);
-
             System.out.println("\nNó encontrado: " + no);
             System.out.println("Tamanho do caminho: " + resultado.distancias.get(no));
             System.out.println("Caminho: " + String.join(" -> ", caminho));
         }
+    }
+
+    private List<String> montarCaminho(String destino, HashMap<String, String> anterior) {
+        List<String> caminho = new ArrayList<>();
+        String atual = destino;
+
+        while (atual != null) {
+            caminho.add(0, atual);
+            if (!anterior.containsKey(atual)) break; // nó não mapeado
+            atual = anterior.get(atual);             // null para a origem
+        }
+
+        return caminho;
     }
 }

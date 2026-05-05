@@ -5,10 +5,10 @@ public class TesteLeitor {
         Leitor l = new Leitor();
         Grafo grafo = new Grafo();
         
-        String caminhoEmails = "coloca/caminho/aqui";
+        String caminhoEmails = "C:\\Users\\davik\\Downloads\\maildir";
         l.preencherGrafo(grafo, caminhoEmails);
 
-        grafo.imprime_adjacencias();
+        // grafo.imprime_adjacencias();
 
         // INFORMACOES GERAIS
         System.out.println("\nINFORMAÇÕES GERAIS");
@@ -45,7 +45,7 @@ public class TesteLeitor {
 
         // NOS A DISTANCIA D
         System.out.println("\nNOS DE DISTANCIA");
-        grafo.imprimeNosDistanciaD("rod.hayslett@enron.com", 2);
+        grafo.imprimeNosDistanciaD("rod.hayslett@enron.com", 1);
         
     }
 }
