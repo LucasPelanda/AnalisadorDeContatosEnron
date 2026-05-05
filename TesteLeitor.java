@@ -5,7 +5,7 @@ public class TesteLeitor {
         Leitor l = new Leitor();
         Grafo grafo = new Grafo();
         
-        String caminhoEmails = "C:\\Users\\davik\\Downloads\\maildir";
+        String caminhoEmails = "coloca/caminho/aqui";
         l.preencherGrafo(grafo, caminhoEmails);
 
         grafo.imprime_adjacencias();
